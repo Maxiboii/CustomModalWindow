@@ -48,34 +48,6 @@ function _createModal(options) {
     return modal
 }
 
-function _createCardContainer() {
-    const cardContainer = document.createElement('div')
-    cardContainer.classList.add('mcards')
-    const row = document.createElement('div')
-    row.classList.add('row')
-    cardContainer.appendChild(row)
-
-    document.body.appendChild(cardContainer)
-    return cardContainer.firstElementChild
-}
-
-function _createCard(container, card) {
-    const col = document.createElement('div')
-    col.classList.add('col')
-    col.insertAdjacentHTML('beforeend', `
-    <div class="card">
-        <img class="card-img-top" style="height: 200px; width: 200px;" src="${card.img}" alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">${card.title}</h5>
-            <a href="#" class="btn btn-primary">Check price</a>
-            <a href="#" class="btn btn-danger">Delete</a>
-        </div>
-    </div>
-    `)
-    container.appendChild(col)
-    return col.firstElementChild
-}
-
 /*
 * title: string
 * closable: boolean
@@ -136,54 +108,3 @@ $.modal = function(options) {
         }
     })
 }
-
-
-$.cards = function(args) {
-    return {
-        add() {
-            console.log(args)
-            const container = _createCardContainer()
-            args.forEach(cardArgs => {
-                const card = _createCard(container, cardArgs)
-                const cardPrice = $.modal({
-                    title: 'Price',
-                    closable: true,
-                    content: `${cardArgs.title} cost ${cardArgs.price}`,
-                    width: '300px',
-                    footerButtons: [
-                        {text: 'Ok', type: 'primary', handler() {
-                            cardPrice.close()
-                        }}
-                    ]
-                })
-                const cardDelete = $.modal({
-                    title: 'Delete',
-                    closable: true,
-                    content: `Are you sure you want to delete ${cardArgs.title} ?`,
-                    width: '300px',
-                    footerButtons: [
-                        {text: 'Yes', type: 'danger', handler() {
-                            cardDelete.close()
-                            card.parentElement.parentElement.removeChild(card.parentElement)
-                        }},
-                        {text: 'Cancel', type: 'primary', handler() {
-                            cardDelete.close()
-                        }}
-                    ]
-                })
-                const buttons = card.querySelectorAll('a')
-                buttons[0].addEventListener('click', function(event) {
-                    event.preventDefault()
-                    cardPrice.open()
-                })
-                buttons[1].addEventListener('click', function(event) {
-                    event.preventDefault()
-                    cardDelete.open()
-                }) 
-            })
-            return container
-        }
-    }
-}
-
-

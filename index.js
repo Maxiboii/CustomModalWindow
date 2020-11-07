@@ -22,7 +22,3 @@ const modal = $.modal({
         }}
     ]
 })
-
-
-const cards = $.cards(fruit)
-cards.add()
