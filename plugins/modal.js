@@ -86,6 +86,9 @@ $.modal = function(options) {
             setTimeout(() => {
                 $modal.classList.remove('hide')
                 closing = false
+                if (typeof options.onClose === 'function') {
+                    options.onClose()
+                }
             }, ANUMATION_SPEED);
         }
     }
@@ -103,7 +106,7 @@ $.modal = function(options) {
             $modal.removeEventListener('click', listener)
             destroyed = true
         },
-        setContent(hmtl) {
+        setContent(html) {
             $modal.querySelector('[data-content]').innerHTML = html
         }
     })
